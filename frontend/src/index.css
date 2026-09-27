@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-200 font-sans;
+    margin: 0;
+    padding: 0;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-600;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+    cursor: pointer;
+  }
+
+  select option {
+    @apply bg-slate-800 text-white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply flex items-center justify-center gap-2 px-5 py-2.5 bg-teal-500 hover:bg-teal-400 text-white rounded-xl text-sm font-semibold shadow-glow transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-medium transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-slate-900 border border-slate-800 rounded-2xl;
+  }
+
+  .input {
+    @apply w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30 transition-all placeholder:text-slate-600;
+  }
+}
+
+/* Scanning animation for face recognition overlay */
+@keyframes scan {
+  0%   { top: 5%; opacity: 1; }
+  48%  { opacity: 1; }
+  50%  { top: 90%; opacity: 0.6; }
+  52%  { opacity: 1; }
+  100% { top: 5%; opacity: 1; }
+}
+
+.animate-scan {
+  animation: scan 2.5s ease-in-out infinite;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+/* Glass morphism for overlays */
+.glass {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Neon glow effect for active elements */
+.neon-border {
+  box-shadow: 0 0 0 1px rgba(20, 184, 166, 0.3), 0 0 20px rgba(20, 184, 166, 0.15);
+}
+
+/* ─── App background (see components/AppBackground.js) ─────────────────────── */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -10%, #0b1b2e 0%, transparent 60%),
+    linear-gradient(180deg, #030712 0%, #020617 100%);
+}
+
+.app-bg__aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.9;
+  transition: opacity 0.8s ease;
+  will-change: transform;
+}
+
+.app-bg__aurora--teal {
+  width: 55vw; height: 55vw;
+  top: -18vw; left: -12vw;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.5), transparent 65%);
+  animation: aurora-drift-a 26s ease-in-out infinite alternate;
+}
+
+.app-bg__aurora--sky {
+  width: 50vw; height: 50vw;
+  bottom: -20vw; right: -10vw;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.45), transparent 65%);
+  animation: aurora-drift-b 32s ease-in-out infinite alternate;
+}
+
+.app-bg__aurora--violet {
+  width: 38vw; height: 38vw;
+  top: 40%; left: 55%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.35), transparent 65%);
+  animation: aurora-drift-c 38s ease-in-out infinite alternate;
+}
+
+/* Face-scan grid, faded toward the edges */
+.app-bg__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(45, 212, 191, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 212, 191, 0.09) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+
+/* Slow horizontal light sweep, echoing the camera scanner */
+.app-bg__scanline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 30vh;
+  background: linear-gradient(180deg, transparent, rgba(45, 212, 191, 0.06), transparent);
+  animation: bg-sweep 14s linear infinite;
+}
+
+.app-bg__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(2, 6, 23, 0.6) 100%);
+}
+
+@keyframes aurora-drift-a {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(18vw, 12vh) scale(1.15); }
+}
+
+@keyframes aurora-drift-b {
+  from { transform: translate(0, 0) scale(1.1); }
+  to   { transform: translate(-16vw, -14vh) scale(0.95); }
+}
+
+@keyframes aurora-drift-c {
+  from { transform: translate(-50%, -50%) scale(0.9); }
+  to   { transform: translate(-20%, -80%) scale(1.2); }
+}
+
+@keyframes bg-sweep {
+  from { top: -30vh; }
+  to   { top: 100vh; }
+}
+
+/* ─── Cursor effects (see components/CursorEffects.js) ─────────────────────── */
+
+/* Soft glow that trails the cursor across the background */
+.app-bg__spotlight {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  background: radial-gradient(
+    600px circle at var(--cursor-x, 50%) var(--cursor-y, 30%),
+    rgba(45, 212, 191, 0.10),
+    rgba(14, 165, 233, 0.05) 35%,
+    transparent 65%
+  );
+}
+
+/* Brighter copy of the grid, only visible around the cursor */
+.app-bg__grid--lit {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  background-image:
+    linear-gradient(rgba(45, 212, 191, 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 212, 191, 0.35) 1px, transparent 1px);
+  -webkit-mask-image: radial-gradient(220px circle at var(--cursor-x, 50%) var(--cursor-y, 30%), #000, transparent);
+  mask-image: radial-gradient(220px circle at var(--cursor-x, 50%) var(--cursor-y, 30%), #000, transparent);
+}
+
+.cursor-fx .app-bg__spotlight,
+.cursor-fx .app-bg__grid--lit { opacity: 1; }
+
+.cursor-fx.cursor-hidden .app-bg__spotlight,
+.cursor-fx.cursor-hidden .app-bg__grid--lit { opacity: 0; }
+
+/* Cards light up where the cursor is */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight::before,
+.spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+/* Surface glow — sits behind the card's content */
+.spotlight::before {
+  z-index: -1;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(45, 212, 191, 0.09),
+    transparent 45%
+  );
+}
+
+/* Border glow — masked down to a 1px ring */
+.spotlight::after {
+  z-index: 1;
+  padding: 1px;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(94, 234, 212, 0.65),
+    rgba(56, 189, 248, 0.25) 40%,
+    transparent 70%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+.cursor-fx .spotlight:hover::before,
+.cursor-fx .spotlight:hover::after { opacity: 1; }
+
+/* Live recognition running: fade out the blurred glows (costly to re-composite
+   under the glass cards every video frame) so the CPU goes to the camera */
+.camera-active .app-bg__aurora { opacity: 0; animation-play-state: paused; }
+.camera-active .app-bg__scanline { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .app-bg__aurora,
+  .app-bg__scanline { animation: none; }
+  .app-bg__scanline { display: none; }
+}
+
+/* Animated gradient background for auth pages */
+.auth-bg {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(14, 165, 233, 0.06) 0%, transparent 50%),
+    #020617;
+}
+
+/* Recharts customization */
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+.recharts-default-tooltip {
+  border-radius: 10px !important;
+  border: 1px solid #334155 !important;
+  background: #1e293b !important;
+}
+
+/* Focus rings */
+*:focus-visible {
+  @apply outline-none ring-2 ring-teal-500/50 ring-offset-1 ring-offset-slate-900;
+}
+
+/* Table hover row */
+tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+/* Loading skeleton */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #263044 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
